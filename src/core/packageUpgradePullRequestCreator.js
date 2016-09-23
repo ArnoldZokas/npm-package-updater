@@ -15,8 +15,16 @@ module.exports = {
             options.repository.headSha = sha;
 
             githubService.createReference(options, (err) => {
-                if (err && (err.message.indexOf('Reference already exists') === -1)) {
-                    return next(err, null);
+                if (err) {
+                    if (err.message.indexOf('Reference already exists') > -1) {
+                        return next(null, {
+                            title: null,
+                            url: null,
+                            isNew: false
+                        });
+                    } else {
+                        return next(err, null);
+                    }
                 }
 
                 options.path = 'package.json';
@@ -33,15 +41,7 @@ module.exports = {
 
                     githubService.createPullRequest(options, (err, pullRequest) => {
                         if (err) {
-                            if (err.message.indexOf('A pull request already exists') > -1) {
-                                return next(null, {
-                                    title: null,
-                                    url: null,
-                                    isNew: false
-                                });
-                            } else {
-                                return next(err, null);
-                            }
+                            return next(err, null);
                         }
 
                         return next(null, {
