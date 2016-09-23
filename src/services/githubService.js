@@ -83,7 +83,7 @@ module.exports = {
             sha: options.manifest.sha,
             branch: options.branchName
         }, (err, result) => {
-            next(null, result);
+            next(err, result);
         });
     },
     createPullRequest: (options, next) => {
