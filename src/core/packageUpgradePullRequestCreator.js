@@ -5,7 +5,7 @@ let githubService = require('../services/githubService');
 
 module.exports = {
     createPullRequest: (options, next) => {
-        options.branchName = `upgrade-${options.package.name}`;
+        options.branchName = `upgrade-${options.package.name}-to-${options.package.versionRange}`;
 
         githubService.getReferenceSha(options, (err, sha) => {
             if (err) {
